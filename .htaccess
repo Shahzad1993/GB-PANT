@@ -1,0 +1,36 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+#RewriteCond %{SERVER_PORT} 443
+#RewriteRule ^(.*)$ HTTPS://demo.udripm.in/$1 [R,L]
+
+<IfModule mod_headers.c>
+	Header always set X-Frame-Options "sameorigin"
+	Header set X-XSS-Protection: "1; mode=block"
+	Header set X-Content-Type-Options "nosniff"
+	#Header set Access-Control-Allow-Origin "*"
+	Header set Referrer-Policy "strict-origin-when-cross-origin"
+	Header always edit Set-Cookie (.*) "$1; HTTPOnly"
+	Header set Strict-Transport-Security: "max-age=31536000; includeSubDomains; preload"
+	#Header set Content-Security-Policy "default-src 'self';"
+	#Header set Content-Security-Policy "default-src 'self' data:; object-src 'none'; child-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content"
+	
+	Header always unset X-Powered-By
+    Header unset X-Powered-By
+	
+</IfModule>
+
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} ^TRACE
+    RewriteRule ^ - [F]
+</IfModule>
+
+
+
+AddDefaultCharset UTF-8
+ServerSignature Off
+
+
